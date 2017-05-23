@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 Helper module for the plot scripts.
 '''
