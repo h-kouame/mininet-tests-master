@@ -1,0 +1,54 @@
+~~~~~
+NEW!!
+~~~~~
+
+Improved tracing
+================
+
+From the command line
+---------------------
+
+To enable tracing, follow the steps below to add & enable tracing support.
+
+To add Mininet-specific scheduler tracing:
+
+$ cd kmod; make; insmod ./mntracer.ko
+
+- Does not pollute syslog with printk messages.
+
+To add dequeue packet scheduler tracing:
+
+$ cd htb; make; insmod sch_htb.ko
+
+To check if tracing is enabled:
+
+$ cat /sys/kernel/debug/tracing/current_tracer
+
+If it's nop, it's fine.  Our custom tracing will print information
+  regardless of any other tracing that's active.
+
+To check for any available tracing events:
+
+$ grep mininet /sys/kernel/debug/tracing/available_events
+mininet:mn_htb
+mininet:mn_sched_switch
+
+To start tracing:
+$ cd /sys/kernel/debug/tracing
+$ echo 1 > events/mininet/enable
+$ cat trace_pipe > /tmp/trace-output
+
+This last command will block.
+
+To stop tracing
+$ echo 0 > events/mininet/enable
+
+
+Bash helper functions
+---------------------
+
+Here are bash helper functions that you can add to mininet experiment
+shell scripts.  Make sure you call the functions!
+
+These are available in trace.sh.  Include by issuing "source /path/to/trace.sh"
+
